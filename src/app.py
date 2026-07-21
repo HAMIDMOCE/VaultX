@@ -1,7 +1,9 @@
+from src.menu import Menu
+
 class App:
     
     def __init__(self):
-        pass
+        self.menu = Menu()
 
     def run(self):
-        print("Welcome to VaultX.")
+        self.menu.show_menu()
