@@ -11,4 +11,4 @@ class Menu:
         print("2. View passwords")
         print("3. Search password")
         print("4. Delete password")
-        print("5. Exit")
+        print("5. Exit\n")
