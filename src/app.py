@@ -10,16 +10,23 @@ class App:
 
         while True:
             choice = input("Enter your choice: ").strip()
-            if choice == "1":
-                print("You selected Add Password.\n")
-            elif choice == "2":
-                print("You selected View Passwords.\n")
-            elif choice == "3":
-                print("You selected Search Password.\n")
-            elif choice == "4":
-                print("You selected Delete Password.\n")
-            elif choice == "5":
-                print("Goodbye!")
+            should_continue, message = self.handle_choice(choice)
+            
+            print(message)
+
+            if not should_continue:
                 break
-            else:
-                print("Invalid option.")
+
+    def handle_choice(self, choice):
+        if choice == "1":
+            return True, "You selected Add Password.\n"
+        elif choice == "2":
+            return True, "You selected View Passwords.\n"
+        elif choice == "3":
+            return True, "You selected Search Password.\n"
+        elif choice == "4":
+            return True, "You selected Delete Password.\n"
+        elif choice == "5":
+            return False, "Goodbye!"
+        else:
+            return True, "Invalid option."
