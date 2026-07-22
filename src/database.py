@@ -89,3 +89,19 @@ class DatabaseManager:
         if self.connection:
             self.connection.close()
             self.connection = None
+
+    def add_password(self, website, username, password):
+        try:
+            self.cursor.execute(
+                """
+                INSERT INTO passwords (website, username, password)
+                VALUES (%s, %s, %s)
+                """,
+                (website, username, password)
+            )
+            self.connection.commit()
+
+            return True, "Password added successfully."
+        
+        except connector.Error as error:
+            return False, str(error)
