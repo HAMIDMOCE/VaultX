@@ -49,9 +49,7 @@ class App:
 
     def handle_choice(self, choice):
         if choice == "1":
-            print("\n=========================")
-            print("        ADD PASSWORD")
-            print("=========================")
+            self.print_header("ADD PASSWORD")
 
             while True:
                 website = input("Enter website: ").strip()
@@ -78,9 +76,7 @@ class App:
             )
         
         elif choice == "2":
-            print("\n=========================")
-            print("      SAVED PASSWORDS")
-            print("=========================\n")
+            self.print_header("SAVED PASSWORDS")
 
             status, records = self.database.get_all_passwords()
 
@@ -90,21 +86,12 @@ class App:
             if not records:
                 return True, "No passwords found."
             
-            for record in records:
-                id_, website, username, password = record
-
-                print(f"ID: {id_}")
-                print(f"Website: {website}")
-                print(f"Username: {username}")
-                print(f"Password: {password}")
-                print("\n-------------------------\n")
+            self.display_passwords(records)
 
             return True, "Passwords displayed successfully."
         
         elif choice == "3":
-            print("\n=========================")
-            print("     SEARCH PASSWORDS")
-            print("=========================\n")
+            self.print_header("SEARCH PASSWORDS")
 
             while True:
                 website = input("Enter website: ").strip()
@@ -122,14 +109,7 @@ class App:
             if not records:
                 return True, "No passwords found."
             
-            for record in records:
-                id_, website, username, password = record
-
-                print(f"ID: {id_}")
-                print(f"Website: {website}")
-                print(f"Username: {username}")
-                print(f"Password: {password}")
-                print("\n-------------------------\n")
+            self.display_passwords(records)
 
             return True, "Passwords displayed successfully.\n"
         elif choice == "4":
@@ -138,3 +118,19 @@ class App:
             return False, "Goodbye!"
         else:
             return True, "Invalid option."
+        
+    def display_passwords(self, records):
+        for record in records:
+            id_, website, username, password = record
+
+            print(f"ID: {id_}")
+            print(f"Website: {website}")
+            print(f"Username: {username}")
+            print(f"Password: {password}")
+            print("\n-------------------------\n")
+
+    def print_header(self, title):
+        print("=" * 40)
+        print(title.center(40))
+        print("=" * 40)
+        print()

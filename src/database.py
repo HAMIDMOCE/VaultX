@@ -20,6 +20,8 @@ class DatabaseManager:
         self.connection = None
         self.cursor = None
 
+        self.columns = "id, website, username, password"
+
     def connect_server(self):
         try:
             self.connection = connector.connect(
@@ -111,8 +113,9 @@ class DatabaseManager:
     def get_all_passwords(self):
         try:
             self.cursor.execute(
-                """
-                SELECT id, website, username, password FROM passwords
+                f"""
+                SELECT {self.columns}
+                FROM passwords
                 """
             )
 
@@ -127,8 +130,9 @@ class DatabaseManager:
 
         try:
             self.cursor.execute(
-                """
-                SELECT id, website, username, password FROM passwords
+                f"""
+                SELECT {self.columns}
+                FROM passwords
                 WHERE website LIKE %s
                 """,
                 (search_value,)
