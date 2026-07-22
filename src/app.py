@@ -49,7 +49,6 @@ class App:
 
     def handle_choice(self, choice):
         if choice == "1":
-
             print("\n=========================")
             print("        ADD PASSWORD")
             print("=========================")
@@ -79,7 +78,27 @@ class App:
             )
         
         elif choice == "2":
-            return True, "You selected View Passwords.\n"
+            print("\n=========================")
+            print("      SAVED PASSWORDS")
+            print("=========================\n")
+
+            status, records = self.database.get_all_passwords()
+
+            if not status:
+                return status, records
+            
+            if not records:
+                return True, "No passwords found."
+            
+            for record in records:
+                id_, website, username, password = record
+                print(f"ID: {id_}")
+                print(f"Website: {website}")
+                print(f"Username: {username}")
+                print(f"Password: {password}")
+                print("\n-------------------------\n")
+
+            return True, "Passwords displayed successfully."
         elif choice == "3":
             return True, "You selected Search Password.\n"
         elif choice == "4":

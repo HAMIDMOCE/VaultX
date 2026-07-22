@@ -1,5 +1,15 @@
+# Virtual Environment
 venv/
-logs/
+
+# Python
 __pycache__/
 *.pyc
-database/*.db
+
+# VS Code
+.vscode/
+
+# SQLTools
+*.session.sql
+
+# Environment variables
+.env
