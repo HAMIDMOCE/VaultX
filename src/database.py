@@ -99,6 +99,7 @@ class DatabaseManager:
                 """,
                 (website, username, password)
             )
+
             self.connection.commit()
 
             return True, "Password added successfully."
@@ -118,5 +119,24 @@ class DatabaseManager:
             records = self.cursor.fetchall()
             
             return True, records
+        except connector.Error as error:
+            return False, str(error)
+        
+    def search_password(self, website):
+        search_value = f"%{website}%"
+
+        try:
+            self.cursor.execute(
+                """
+                SELECT id, website, username, password FROM passwords
+                WHERE website LIKE %s
+                """,
+                (search_value,)
+            )
+
+            records = self.cursor.fetchall()
+
+            return True, records
+        
         except connector.Error as error:
             return False, str(error)

@@ -92,6 +92,7 @@ class App:
             
             for record in records:
                 id_, website, username, password = record
+
                 print(f"ID: {id_}")
                 print(f"Website: {website}")
                 print(f"Username: {username}")
@@ -99,8 +100,38 @@ class App:
                 print("\n-------------------------\n")
 
             return True, "Passwords displayed successfully."
+        
         elif choice == "3":
-            return True, "You selected Search Password.\n"
+            print("\n=========================")
+            print("     SEARCH PASSWORDS")
+            print("=========================\n")
+
+            while True:
+                website = input("Enter website: ").strip()
+
+                if website:
+                    break
+
+                print("Website cannot be empty.\n")
+
+            status, records = self.database.search_password(website)
+
+            if not status:
+                return False, records
+            
+            if not records:
+                return True, "No passwords found."
+            
+            for record in records:
+                id_, website, username, password = record
+
+                print(f"ID: {id_}")
+                print(f"Website: {website}")
+                print(f"Username: {username}")
+                print(f"Password: {password}")
+                print("\n-------------------------\n")
+
+            return True, "Passwords displayed successfully.\n"
         elif choice == "4":
             return True, "You selected Delete Password.\n"
         elif choice == "5":
