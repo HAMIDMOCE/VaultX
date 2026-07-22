@@ -8,7 +8,8 @@ class DatabaseManager:
             port=3306,
             user="root",
             password="Hamid.mo83",
-            database_name="vaultx"):
+            database_name="vaultx"
+            ):
         
         self.host = host
         self.port = port
@@ -25,7 +26,7 @@ class DatabaseManager:
                 host = self.host,
                 port = self.port,
                 user = self.user,
-                password = self.password,
+                password = self.password
             )
 
             self.cursor = self.connection.cursor()
@@ -35,13 +36,56 @@ class DatabaseManager:
             return False, str(error)
 
     def create_database(self):
-        pass
+        try:
+            self.cursor.execute(
+                f"CREATE DATABASE IF NOT EXISTS {self.database_name}"
+            )
+
+            return True, "Database created successfully."
+        
+        except connector.Error as error:
+            return False, str(error)
 
     def connect_database(self):
-        pass
+        try:
+            self.connection = connector.connect(
+                host = self.host,
+                port = self.port,
+                user = self.user,
+                password = self.password,
+                database = self.database_name
+            )
+
+            self.cursor = self.connection.cursor()
+            return True, f"Connected to '{self.database_name}' successfully."
+        
+        except connector.Error as error:
+            return False, str(error)
 
     def create_tables(self):
-        pass
+        try:
+            self.cursor.execute(
+                """
+                CREATE TABLE IF NOT EXISTS passwords(
+                    id INT PRIMARY KEY AUTO_INCREMENT,
+                    website VARCHAR(255) NOT NULL,
+                    username VARCHAR(255) NOT NULL,
+                    password TEXT NOT NULL,
+                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                )
+                """
+            )
+
+            return True, "Tables created successfully."
+        
+        except connector.Error as error:
+            return False, str(error)
 
     def close(self):
-        pass
+        if self.cursor:
+            self.cursor.close()
+            self.cursor = None
+
+        if self.connection:
+            self.connection.close()
+            self.connection = None
