@@ -161,7 +161,7 @@ class App:
                 return False, records
 
             if not records:
-                return True, "NO passwords found."
+                return True, "No passwords found."
 
             self.display_passwords(records)
 
@@ -177,7 +177,7 @@ class App:
                     break
 
                 except ValueError:
-                    print("ID most be a number.\n")
+                    print("ID must be a number.\n")
 
 
             record = [record for record in records if record[0] == id_]
@@ -199,6 +199,17 @@ class App:
             new_password = input("New password (leave empty to keep): ").strip()
             if not new_password:
                 new_password = password
+
+            while True:
+                confirm = input("Are you sure? (y/n): ").strip().lower()
+            
+                if confirm in ("y","n"):
+                    break
+            
+                print("Please enter y or n.\n")
+            
+            if confirm == "n":
+                return True, "Update operation cancelled."
 
             return self.database.update_password(id_, new_website, new_username, new_password)
 
