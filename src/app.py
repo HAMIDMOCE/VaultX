@@ -113,7 +113,45 @@ class App:
 
             return True, "Passwords displayed successfully.\n"
         elif choice == "4":
-            return True, "You selected Delete Password.\n"
+            self.print_header("DELETE PASSWORD")
+
+            status, records = self.database.get_all_passwords()
+
+            if not status:
+                return False, records
+
+            if not records:
+                return True, "No passwords found."
+            
+            self.display_passwords(records)
+
+            while True:
+                id_ = input("Enter ID: ").strip()
+
+                if not id_:
+                    print("ID cannot be empty.\n")
+                    continue
+
+                try:
+                    id_ = int(id_)
+                    break
+
+                except ValueError:
+                    print("ID must be a number.\n")
+
+            while True:
+                confirm = input("Are you sure? (y/n): ").strip().lower()
+
+                if confirm in ("y","n"):
+                    break
+
+                print("Please enter y or n.\n")
+
+            if confirm == "n":
+                return True, "Delete operation cancelled."
+
+            return self.database.delete_password(id_)
+    
         elif choice == "5":
             return False, "Goodbye!"
         else:

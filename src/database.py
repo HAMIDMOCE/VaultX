@@ -144,3 +144,24 @@ class DatabaseManager:
         
         except connector.Error as error:
             return False, str(error)
+
+    def delete_password(self, id_):
+        try:
+            self.cursor.execute(
+                """
+                DELETE FROM passwords WHERE id = %s
+                """,
+                (id_,)
+            )
+            
+            self.connection.commit()
+            
+            count = self.cursor.rowcount
+            
+            if count == 0:
+                return True, "No password found with this ID."
+            
+            return True, "Password deleted successfully."
+
+        except connector.Error as error:
+            return False, str(error)
