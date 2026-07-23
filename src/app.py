@@ -153,7 +153,58 @@ class App:
             return self.database.delete_password(id_)
     
         elif choice == "5":
+            self.print_header("UPDATE PASSWORD")
+
+            status, records = self.database.get_all_passwords()
+
+            if not status:
+                return False, records
+
+            if not records:
+                return True, "NO passwords found."
+
+            self.display_passwords(records)
+
+            while True:
+                id_ = input("Enter ID: ").strip()
+                
+                if not id_:
+                    print("ID cannot be empty.\n")
+                    continue
+
+                try:
+                    id_ = int(id_)
+                    break
+
+                except ValueError:
+                    print("ID most be a number.\n")
+
+
+            record = [record for record in records if record[0] == id_]
+            if not record:
+                return True, "No password found with this ID."
+            id_, website, username, password = record[0]
+
+            print(f"Current Website: {website}")
+            new_website = input("New Website (leave empty to keep): ").strip()
+            if not new_website:
+                new_website = website
+
+            print(f"Current Username: {username}")
+            new_username = input("New Username (leave empty to keep): ").strip()
+            if not new_username:
+                new_username = username
+
+            print(f"Current Password: {password}")
+            new_password = input("New password (leave empty to keep): ").strip()
+            if not new_password:
+                new_password = password
+
+            return self.database.update_password(id_, new_website, new_username, new_password)
+
+        elif choice == "6":
             return False, "Goodbye!"
+        
         else:
             return True, "Invalid option."
         

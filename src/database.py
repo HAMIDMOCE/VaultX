@@ -165,3 +165,28 @@ class DatabaseManager:
 
         except connector.Error as error:
             return False, str(error)
+
+    def update_password(self, id_, new_website, new_username, new_password):
+        try:
+            self.cursor.execute(
+                """
+                UPDATE passwords SET
+                    website=%s,
+                    username=%s,
+                    password=%s
+                WHERE id=%s
+                """,
+                (new_website, new_username, new_password, id_)
+            )
+
+            self.connection.commit()
+
+            count = self.cursor.rowcount
+
+            if count == 0:
+                return True, "No password found with this ID."
+
+            return True, "Updated successfully."
+
+        except connector.Error as error:
+            return False, str(error)
